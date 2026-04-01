@@ -232,6 +232,9 @@ HF_HUB_DISABLE_PROGRESS_BARS: bool | None = (
 # Disable warning on machines that do not support symlinks (e.g. Windows non-developer)
 HF_HUB_DISABLE_SYMLINKS_WARNING: bool = _is_true(os.environ.get("HF_HUB_DISABLE_SYMLINKS_WARNING"))
 
+# Force the cache to never use symlinks, regardless of OS or filesystem support.
+HF_HUB_DISABLE_SYMLINKS: bool = _is_true(os.environ.get("HF_HUB_DISABLE_SYMLINKS"))
+
 # Disable warning when using experimental features
 HF_HUB_DISABLE_EXPERIMENTAL_WARNING: bool = _is_true(os.environ.get("HF_HUB_DISABLE_EXPERIMENTAL_WARNING"))
 

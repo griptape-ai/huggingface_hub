@@ -78,12 +78,19 @@ def are_symlinks_supported(cache_dir: str | Path | None = None) -> bool:
     Since symlinks support can change depending on the mounted disk, we need to check
     on the precise cache folder. By default, the default HF cache directory is checked.
 
+    Can be overridden globally by setting the `HF_HUB_DISABLE_SYMLINKS` environment
+    variable to `1`, or per-directory using `set_symlinks_supported()`.
+
     Args:
         cache_dir (`str`, `Path`, *optional*):
             Path to the folder where cached files are stored.
 
     Returns: [bool] Whether symlinks are supported in the directory.
     """
+    # Global override: env var forces symlinks off for all directories.
+    if constants.HF_HUB_DISABLE_SYMLINKS:
+        return False
+
     # Defaults to HF cache
     if cache_dir is None:
         cache_dir = constants.HF_HUB_CACHE
@@ -129,6 +136,33 @@ def are_symlinks_supported(cache_dir: str | Path | None = None) -> bool:
                     warnings.warn(message)
 
     return _are_symlinks_supported_in_dir[cache_dir]
+
+
+def set_symlinks_supported(cache_dir: str | Path, *, supported: bool) -> None:
+    """Explicitly set whether symlinks are supported for a given cache directory.
+
+    This overrides the automatic detection performed by [`are_symlinks_supported`] for
+    the specified directory.
+
+    Note: [`HF_HUB_DISABLE_SYMLINKS`] takes precedence over this setter, if that
+    environment variable is set, symlinks are disabled globally.
+
+    Args:
+        cache_dir (`str` or `Path`):
+            Path to the cache directory to configure.
+        supported (`bool`):
+            Whether symlinks should be considered supported for this directory.
+
+    Example:
+        ```python
+        from huggingface_hub import set_symlinks_supported
+        from huggingface_hub.constants import HF_HUB_CACHE
+
+        set_symlinks_supported(HF_HUB_CACHE, supported=False)
+        ```
+    """
+    cache_dir = str(Path(cache_dir).expanduser().resolve())
+    _are_symlinks_supported_in_dir[cache_dir] = supported
 
 
 @dataclass(frozen=True)

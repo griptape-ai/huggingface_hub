@@ -166,6 +166,7 @@ _SUBMOD_ATTRS = {
         "get_hf_file_metadata",
         "hf_hub_download",
         "hf_hub_url",
+        "set_symlinks_supported",
         "try_to_load_from_cache",
     ],
     "hf_api": [
@@ -1290,6 +1291,7 @@ if TYPE_CHECKING:  # pragma: no cover
         get_hf_file_metadata,  # noqa: F401
         hf_hub_download,  # noqa: F401
         hf_hub_url,  # noqa: F401
+        set_symlinks_supported,  # noqa: F401
         try_to_load_from_cache,  # noqa: F401
     )
     from .hf_api import (
